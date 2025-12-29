@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Metamorpho Shoes | Premium Footwear</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Poppins',sans-serif;
+  background:#0b0b0b;
+  color:#f1f1f1;
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;top:0;width:100%;
+  padding:20px 80px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);
+  z-index:100;
+}
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  letter-spacing:4px;
+  color:#c9a85c;
+}
+nav a{
+  margin-left:35px;
+  text-decoration:none;
+  color:#ccc;
+  font-size:14px;
+}
+
+/* HERO NIKE */
+.hero-nike{
+  height:100vh;
+  background:
+  linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.9)),
+  url("https://images.unsplash.com/photo-1603808033192-082d6919d3e1") center/cover;
+  display:flex;
+  align-items:center;
+  padding:0 80px;
+}
+.hero-nike h1{
+  font-family:'Playfair Display',serif;
+  font-size:64px;
+  line-height:1.1;
+}
+.hero-nike p{margin:30px 0;color:#bbb}
+.btn{
+  border:1px solid #c9a85c;
+  padding:14px 40px;
+  color:#c9a85c;
+  text-decoration:none;
+  letter-spacing:2px;
+}
+
+/* CATEGORIES */
+.categories{
+  padding:120px 80px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:40px;
+}
+.cat-card{
+  background:#111;
+  padding:60px 20px;
+  text-align:center;
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  color:#c9a85c;
+}
+
+/* CAMPAIGN */
+.campaign{
+  padding:160px 80px;
+  text-align:center;
+  background:#000;
+}
+.campaign h2{
+  font-family:'Playfair Display',serif;
+  font-size:48px;
+  color:#c9a85c;
+}
+
+/* TRENDING */
+.trending{
+  padding:120px 80px;
+}
+.trending h2{
+  font-family:'Playfair Display',serif;
+  font-size:36px;
+  margin-bottom:60px;
+  color:#c9a85c;
+}
+
+/* PRODUCTS */
+.products{
+  padding:120px 80px;
+  text-align:center;
+}
+.products h2{
+  font-family:'Playfair Display',serif;
+  font-size:36px;
+  margin-bottom:80px;
+  color:#c9a85c;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:60px;
+}
+.card{
+  background:#111;
+  transition:.4s;
+}
+.card:hover{transform:translateY(-12px)}
+.card img{
+  width:100%;
+  height:340px;
+  object-fit:cover;
+}
+.card h3{
+  font-family:'Playfair Display',serif;
+  margin:20px 0 8px;
+}
+.card span{color:#c9a85c}
+
+/* BERITA */
+.berita{
+  padding:120px 80px;
+  max-width:1000px;
+  margin:auto;
+}
+.berita-card{
+  background:#111;
+  border-left:4px solid #c9a85c;
+  padding:40px;
+  margin-bottom:40px;
+}
+.berita-judul{
+  font-family:'Playfair Display',serif;
+  font-size:24px;
+  color:#c9a85c;
+}
+.berita-isi{color:#ccc;margin:20px 0}
+
+/* MAP */
+.location-wrap{padding:120px 80px}
+.location-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:60px;
+}
+#map{
+  height:300px;
+  border-radius:16px;
+}
+
+/* FOOTER */
+footer{
+  padding:40px;
+  text-align:center;
+  background:#000;
+  color:#777;
+}
+
+/* JAM */
+.jam-box{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  border:1px solid #c9a85c;
+  padding:12px 22px;
+  background:#111;
+}
+.berita{
+  padding:120px 80px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.berita h2{
+  font-family:'Playfair Display',serif;
+  font-size:34px;
+  color:#c9a85c;
+  margin-bottom:60px;
+  text-align:center;
+}
+
+.berita-card{
+  background:#111;
+  border-left:5px solid #c9a85c;
+  padding:40px;
+  margin-bottom:40px;
+  box-shadow:0 30px 60px rgba(0,0,0,.6);
+}
+
+.berita-judul{
+  font-family:'Playfair Display',serif;
+  font-size:24px;
+  color:#c9a85c;
+  margin-bottom:15px;
+}
+
+.berita-isi{
+  color:#ccc;
+  line-height:1.9;
+  font-size:15px;
+}
+
+.berita-meta{
+  margin-top:25px;
+  display:flex;
+  gap:25px;
+  font-size:13px;
+  color:#999;
+  border-top:1px solid #222;
+  padding-top:15px;
+}
+.featured{
+  padding:120px 80px;
+  background:#0e0e0e;
+}
+
+.featured h2{
+  text-align:center;
+  font-family:'Playfair Display',serif;
+  font-size:36px;
+  color:#c9a85c;
+  margin-bottom:70px;
+}
+
+.featured-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:60px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.featured-card{
+  background:#111;
+  overflow:hidden;
+  transition:.4s;
+}
+
+.featured-card:hover{
+  transform:translateY(-10px);
+}
+
+.featured-card img{
+  width:100%;
+  height:380px;
+  object-fit:cover;
+}
+
+.featured-info{
+  padding:30px;
+  text-align:center;
+}
+
+.featured-info h3{
+  font-family:'Playfair Display',serif;
+  margin-bottom:10px;
+}
+
+.featured-info span{
+  color:#c9a85c;
+  font-size:14px;
+}
+
+.featured-info a{
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 28px;
+  border:1px solid #c9a85c;
+  color:#c9a85c;
+  text-decoration:none;
+  font-size:13px;
+}
+.badge{
+  position:absolute;
+  top:15px;
+  left:15px;
+  background:#c9a85c;
+  color:#000;
+  font-size:11px;
+  padding:6px 12px;
+  letter-spacing:1px;
+}
+
+.badge.gold{
+  background:gold;
+}
+.card{
+  position:relative;
+}
+.cart-btn{
+  margin:20px 0 30px;
+  background:#c9a85c;
+  border:none;
+  padding:10px 16px;
+  cursor:pointer;
+  font-size:16px;
+}
+.cart-btn:hover{
+  background:gold;
+}
+.filter-box{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin:40px 0;
+  flex-wrap:wrap;
+}
+
+.filter-box input,
+.filter-box select{
+  padding:14px 18px;
+  font-size:14px;
+  border:1px solid #ccc;
+  outline:none;
+  min-width:220px;
+}
+/* HELP BUTTON */
+.help-btn{
+  position:fixed;
+  right:30px;
+  bottom:90px;
+  background:#c9a85c;
+  color:#000;
+  padding:12px 22px;
+  border-radius:30px;
+  cursor:pointer;
+  font-size:14px;
+  z-index:100;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+/* POPUP */
+.help-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+}
+
+.help-content{
+  background:#111;
+  padding:40px;
+  max-width:420px;
+  width:90%;
+  text-align:center;
+}
+
+.help-content h3{
+  font-family:'Playfair Display',serif;
+  color:#c9a85c;
+  margin-bottom:15px;
+}
+
+.help-content p{
+  color:#aaa;
+  margin-bottom:20px;
+}
+
+.help-content ul{
+  text-align:left;
+  color:#ccc;
+  font-size:14px;
+  margin-bottom:25px;
+}
+
+.help-content li{
+  margin-bottom:10px;
+}
+
+.help-wa{
+  display:block;
+  background:#25d366;
+  color:#fff;
+  padding:12px;
+  text-decoration:none;
+  margin-bottom:15px;
+}
+
+.help-content button{
+  background:none;
+  border:1px solid #c9a85c;
+  color:#c9a85c;
+  padding:10px 20px;
+  cursor:pointer;
+}
+.social-media{
+  margin-top:20px;
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+.social-media a{
+  text-decoration:none;
+  color:#c9a85c;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.social-media a:hover{
+  color:white;
+  transform:translateY(-3px);
+}
+
+
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">METAMORPHO</div>
+  <nav>
+    <a href="#products">Produk</a>
+    <a href="#location">Lokasi</a>
+  </nav>
+</header>
+
+<section class="hero-nike">
+  <div>
+    <h1>Move<br>Different</h1>
+    <p>Premium Footwear Experience</p>
+    <a class="btn" href="#products">Shop Now</a>
+  </div>
+</section>
+
+<div class="filter-box">
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Cari sepatu Metamorpho..."
+    onkeyup="filterProduct()"
+  >
+
+  <select id="categoryFilter" onchange="filterProduct()">
+    <option value="all">All Categories</option>
+    <option value="lifestyle">Lifestyle</option>
+    <option value="running">Running</option>
+    <option value="formal">Formal</option>
+    <option value="limited">Limited</option>
+  </select>
+</div>
+
+
+<section class="campaign">
+  <h2>Crafted For Movement</h2>
+</section>
+
+
+<section class="berita reveal">
+  <h2>Berita Acara</h2>
+
+  <div class="berita-card">
+    <p class="berita-judul">
+      Berita Acara Peluncuran Website Bisnis Digital Metamorpho Shoes
+    </p>
+
+    <p class="berita-isi">
+      Pada hari <b><span id="openTanggal"></span></b> telah dilaksanakan
+      peluncuran website bisnis digital Metamorpho Shoes sebagai media
+      branding, pemasaran, dan dokumentasi bisnis digital.
+    </p>
+
+    <p class="berita-isi">
+      Website ini menampilkan katalog produk, fitur pencarian,
+      filter kategori, peta lokasi, serta konten berita sebagai
+      pendukung pembelajaran mata kuliah Bisnis Digital.
+    </p>
+
+    <div class="berita-meta">
+      <span id="tanggalBerita">📅 </span>
+      <span id="jamBerita">⏰ </span>
+      <span>👤 Adam Saputra · 11210000027</span>
+    </div>
+  </div>
+</section>
+<section class="products" id="products">
+  <h2>Koleksi Unggulan</h2>
+
+  <div class="grid">
+
+    
+
+    <div class="card" data-category="running">
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff">
+      <h3>Metamorpho Velocity</h3>
+      <span>Rp 2.450.000</span><br>
+      <div class="rating" data-rating="4">
+  <span onclick="rate(this,1)">★</span>
+  <span onclick="rate(this,2)">★</span>
+  <span onclick="rate(this,3)">★</span>
+  <span onclick="rate(this,4)">★</span>
+  <span onclick="rate(this,5)">★</span>
+</div>
+      <button class="cart-btn" onclick="addToCart()">🛒</button>
+    </div>
+
+    <div class="card" data-category="limited">
+      <span class="badge">LIMITED</span>
+      <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77">
+      <h3>Metamorpho Signature</h3>
+      <span>Rp 3.150.000</span><br>
+      <div class="rating" data-rating="4">
+  <span onclick="rate(this,1)">★</span>
+  <span onclick="rate(this,2)">★</span>
+  <span onclick="rate(this,3)">★</span>
+  <span onclick="rate(this,4)">★</span>
+  <span onclick="rate(this,5)">★</span>
+</div>
+      <button class="cart-btn" onclick="addToCart()">🛒</button>
+    </div>
+
+
+    <div class="card" data-category="running">
+      <span class="badge gold">HOT</span>
+      <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5">
+      <h3>Metamorpho Sprint</h3>
+      <span>Rp 2.350.000</span><br>
+      <div class="rating" data-rating="4">
+  <span onclick="rate(this,1)">★</span>
+  <span onclick="rate(this,2)">★</span>
+  <span onclick="rate(this,3)">★</span>
+  <span onclick="rate(this,4)">★</span>
+  <span onclick="rate(this,5)">★</span>
+</div>
+      <button class="cart-btn" onclick="addToCart()">🛒</button>
+    </div>
+
+    <div class="card" data-category="limited">
+      <span class="badge">LIMITED</span>
+      <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77">
+      <h3>Metamorpho Eclipse</h3>
+      <span>Rp 3.450.000</span><br>
+      <button class="cart-btn" onclick="addToCart()">🛒</button>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="berita">
+  <div class="berita-card">
+    <p class="berita-judul">Peluncuran Website Metamorpho Shoes</p>
+    <p class="berita-isi">
+      Website bisnis digital Metamorpho Shoes resmi diluncurkan sebagai media branding.
+    </p>
+  </div>
+</section>
+
+<section id="location" class="location-wrap">
+  <div class="location-grid">
+    <div id="map"></div>
+    <div>
+      <p>📍 Jakarta · Bandung · Surabaya</p>
+      <p>📞 +62 812 3456 7890</p>
+      <p>📧 hello@metamorphoshoes.com</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="social-media">
+  <a href="https://instagram.com/gndht._" target="_blank">Instagram</a>
+  <a href="https://wa.me/6285811097520" target="_blank">WhatsApp</a>
+  <a href="https://www.tiktok.com/@gndht._" target="_blank">TikTok</a>
+  <a href="mailto:adamsakun12@gmail.com">Email</a>
+</div>
+
+  © 2025 Metamorpho Shoes — Adam Saputra 11210000027
+</footer>
+
+<div class="jam-box">
+  <span id="clock">00:00:00</span>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map=L.map('map',{scrollWheelZoom:false}).setView([-6.9,107.6],5);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+</script>
+
+<script>
+setInterval(()=>{
+  const d=new Date();
+  document.getElementById('clock').innerText=
+  d.toLocaleTimeString('id-ID');
+},1000);
+</script>
+<script>
+function updateBeritaTime(){
+  const now = new Date();
+
+  const hari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const bulan = ["Januari","Februari","Maret","April","Mei","Juni",
+                 "Juli","Agustus","September","Oktober","November","Desember"];
+
+  const tgl = hari[now.getDay()] + ", " +
+              now.getDate() + " " +
+              bulan[now.getMonth()] + " " +
+              now.getFullYear();
+
+  const jam = now.getHours().toString().padStart(2,"0") + ":" +
+              now.getMinutes().toString().padStart(2,"0") + ":" +
+              now.getSeconds().toString().padStart(2,"0");
+
+  document.getElementById("tanggalBerita").innerText = "📅 " + tgl;
+  document.getElementById("jamBerita").innerText = "⏰ " + jam;
+}
+
+setInterval(updateBeritaTime, 1000);
+updateBeritaTime();
+</script>
+<script>
+let cartCount = 0;
+function addToCart(){
+  cartCount++;
+  document.getElementById("cartCount").innerText = cartCount;
+}
+</script>
+<script>
+function filterProduct(){
+  let input = document.getElementById("searchInput").value.toLowerCase();
+  let category = document.getElementById("categoryFilter").value;
+  let cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    let name = card.querySelector("h3").innerText.toLowerCase();
+    let cardCategory = card.getAttribute("data-category");
+
+    let matchName = name.includes(input);
+    let matchCategory = (category === "all" || cardCategory === category);
+
+    if(matchName && matchCategory){
+      card.style.display = "block";
+    }else{
+      card.style.display = "none";
+    }
+  });
+}
+</script>
+<!-- HELP BUTTON -->
+<div class="help-btn" onclick="openHelp()">Help</div>
+
+<!-- HELP POPUP -->
+<div class="help-popup" id="helpPopup">
+  <div class="help-content">
+    <h3>Need Help?</h3>
+    <p>We’re here to assist your premium shopping experience.</p>
+
+    <ul>
+      <li>📦 Cara Order: Pilih produk → klik Pesan</li>
+      <li>💳 Pembayaran: Transfer / E-Wallet</li>
+      <li>🚚 Pengiriman: 2–5 hari kerja</li>
+      <li>👟 Produk: Handmade & Limited</li>
+    </ul>
+
+    <a href="https://wa.me/6285811097520" class="help-wa">
+      Chat WhatsApp
+    </a>
+
+    <button onclick="closeHelp()">Close</button>
+  </div>
+</div>
+<script>
+function openHelp(){
+  document.getElementById("helpPopup").style.display = "flex";
+}
+
+function closeHelp(){
+  document.getElementById("helpPopup").style.display = "none";
+}
+</script>
+
+
+</body>
+</html>
+
+
